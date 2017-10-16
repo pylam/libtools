@@ -3,6 +3,7 @@
 . ../PREFIX
 
 ./myclean.sh
-./configure --prefix=$MYPREFIX && \
+PATH="$MYAUTOTOOLS/bin:$PATH"
+./configure --prefix=$MYAUTOTOOLS && \
 make && \
 make install
