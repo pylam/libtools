@@ -2,12 +2,7 @@
 
 . ../PREFIX
 
-PATH=$MYPREFIX/bin:$PATH
-git clean -f
-git clean -fd
-git checkout -- .
-./bootstrap
-./configure --prefix=$MYPREFIX
-make
+./myclean.sh
+./configure --prefix=$MYPREFIX && \
+make && \
 make install
-
