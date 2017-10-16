@@ -3,7 +3,7 @@
 # Prepare a package to use libtool.
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
-# Copyright (C) 2003-2017 Free Software Foundation, Inc.
+# Copyright (C) 2003-2015 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -94,12 +94,7 @@ usage_message="Options:
 "
 
 # Additional text appended to 'usage_message' in response to '--help'.
-func_help ()
-{
-    $debug_cmd
-
-    func_usage_message
-    $ECHO "$long_help_message
+long_help_message=$long_help_message"
        'environment'   show warnings about LIBTOOLIZE_OPTIONS content
        'file'          show warnings about file copying and linking
 
@@ -125,9 +120,8 @@ include the following information:
 
 Report bugs to <@PACKAGE_BUGREPORT@>.
 GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
-General help using GNU software: <http://www.gnu.org/gethelp/>."
-    exit 0
-}
+General help using GNU software: <http://www.gnu.org/gethelp/>.
+"
 
 warning_categories='environment file'
 
@@ -157,11 +151,11 @@ libtoolize_environment_options ()
 
     # Pass back the updated list of options.
     if test -n "$envopts"; then
-      func_quote eval "$envopts" ${1+"$@"}
+      func_quote_for_eval "$envopts" ${1+"$@"}
     else
-      func_quote eval ${1+"$@"}
+      func_quote_for_eval ${1+"$@"}
     fi
-    libtoolize_environment_options_result=$func_quote_result
+    libtoolize_environment_options_result=$func_quote_for_eval_result
 }
 func_add_hook func_options_prep libtoolize_environment_options
 
@@ -185,6 +179,10 @@ libtoolize_options_prep ()
     opt_subproject=false
 
     ltdl_mode=
+
+    # Pass back the list of options.
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_options_prep_result=$func_quote_for_eval_result
 }
 func_add_hook func_options_prep libtoolize_options_prep
 
@@ -254,8 +252,8 @@ libtoolize_parse_options ()
     done
 
     # save modified positional parameters for caller
-    func_quote eval ${1+"$@"}
-    libtoolize_parse_options_result=$func_quote_result
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_parse_options_result=$func_quote_for_eval_result
 }
 func_add_hook func_parse_options libtoolize_parse_options
 
@@ -288,8 +286,8 @@ libtoolize_validate_options ()
       func_fatal_help "unknown additional arguments: '${1+$@}'"
 
     # Pass back the empty argument list
-    func_quote eval ${1+"$@"}
-    libtoolize_validate_options_result=$func_quote_result
+    func_quote_for_eval ${1+"$@"}
+    libtoolize_validate_options_result=$func_quote_for_eval_result
 }
 func_add_hook func_validate_options libtoolize_validate_options
 

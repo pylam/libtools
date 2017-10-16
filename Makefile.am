@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003-2017 Free Software Foundation, Inc.
+##   Copyright (C) 2003-2015 Free Software Foundation, Inc.
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
@@ -27,7 +27,7 @@ ACLOCAL_AMFLAGS		= -I m4
 AM_CPPFLAGS		=
 AM_LDFLAGS		=
 
-SUBDIRS			= . gnulib-tests
+SUBDIRS			= .
 DIST_SUBDIRS		= $(SUBDIRS)
 EXTRA_DIST		=
 
@@ -86,14 +86,11 @@ ltmain_in	= $(srcdir)/$(aux_dir)/ltmain.in
 libtool_m4	= $(srcdir)/$(macro_dir)/libtool.m4
 ltversion_in	= $(srcdir)/$(macro_dir)/ltversion.in
 ltversion_m4	= $(srcdir)/$(macro_dir)/ltversion.m4
-no_bogus_macros	= $(srcdir)/$(aux_dir)/no-bogus-m4-defines
 options_parser	= $(srcdir)/$(aux_dir)/options-parser
-u2d_copyright	= $(srcdir)/$(aux_dir)/update-copyright
 
 EXTRA_DIST     += $(extract_trace) $(funclib_sh) $(inline_source) \
 		  $(libtoolize_in) $(ltmain_in) $(ltmain_sh) \
-		  $(ltversion_in) $(ltversion_m4) $(no_bogus_macros) \
-		  $(options_parser) $(u2d_copyright)
+		  $(ltversion_in) $(ltversion_m4) $(options_parser)
 
 ## These are the replacements that need to be made at bootstrap time,
 ## because they must be static in distributed files, and not accidentally
@@ -210,9 +207,7 @@ bootstrap_files = \
     $(ltversion_m4)
 
 .PHONY: bootstrap-deps bootstrap-deps-prep
-bootstrap-deps: bootstrap-deps-prep
-	$(MAKE) $(bootstrap_files)
-
+bootstrap-deps: bootstrap-deps-prep $(bootstrap_files)
 bootstrap-deps-prep:
 ## The following variables are substituted by 'bootstrap-dep-preps'
 	@exit_cmd=:; \
@@ -539,7 +534,7 @@ git_log_fix		= $(srcdir)/$(aux_dir)/git-log-fix
 thanks_gen		= $(srcdir)/$(aux_dir)/thanks-gen
 
 dotserial		= $(distdir)/.serial
-dotversion		= $(top_srcdir)/.version
+dotversion		= $(srcdir)/.version
 tarball_version		= $(distdir)/.tarball-version
 readme			= $(distdir)/README
 changelog		= $(distdir)/ChangeLog
@@ -552,9 +547,7 @@ no_thanks		= $(srcdir)/NO-THANKS
 changelog_start_date = 2011-01-01
 $(changelog): FORCE
 	$(AM_V_GEN)if test -d '$(srcdir)/.git'; then \
-	  TZ=UTC $(gitlog_to_changelog) --amend=$(git_log_fix) \
-	      --ignore-matching=Omit-from-ChangeLog. \
-	      --format='%s%n%n%b%n' \
+	  $(gitlog_to_changelog) --amend=$(git_log_fix) \
 	      --since=$(changelog_start_date) > '$@T'; \
 	  rm -f '$@'; mv '$@T' '$@'; \
 	  cat '$(changelog_old)' >> '$@'; \
@@ -599,7 +592,7 @@ $(dotversion):
 EXTRA_DIST += $(edit_readme_alpha)
 re_alpha_version = '\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*[-\.][-\.0-9a-z]*\)'
 $(readme): FORCE
-	@if test -n "`expr $(VERSION) : $(re_alpha_version)`"; then \
+	@if test -n `expr $(VERSION) : $(re_alpha_version)`; then \
 	  if test 0 = '$(AM_DEFAULT_VERBOSITY)' && test 1 != '$(V)'; \
 	    then echo "  GEN     " $@; \
 	  else echo "$(SHELL) $(edit_readme_alpha) $@"; fi; \
@@ -615,7 +608,12 @@ dist-hook: $(changelog) $(thanks) $(dotversion) $(readme)
 ## ...and similarly for .serial.
 	$(git_commit_count) > $(dotserial)
 ## Ensure aclocal has not wrongly picked up old macro definitions.
-	$(no_bogus_macros)
+	@for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
+	  if grep "$$macro" '$(srcdir)/aclocal.m4' '$(lt_aclocal_m4)'; then \
+	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
+	    exit 1; \
+	  else :; fi; \
+	done
 
 distcheck-hook: syntax-check
 

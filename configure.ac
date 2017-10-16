@@ -1,6 +1,6 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 
-#   Copyright (C) 2001, 2004-2005, 2008, 2010-2017 Free Software
+#   Copyright (C) 2001, 2004-2005, 2008, 2010-2015 Free Software
 #   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2001
 #
@@ -111,7 +111,7 @@ AB_INIT([$autobuild_mode])
 
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/.version'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(srcdir)/.version'])
 
 
 ## ------------------------------- ##
@@ -182,5 +182,5 @@ AM_MISSING_PROG([HELP2MAN], [help2man])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile gnulib-tests/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

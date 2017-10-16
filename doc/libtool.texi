@@ -20,7 +20,7 @@
 @copying
 This manual is for GNU Libtool (version @value{VERSION}, @value{UPDATED}).
 
-Copyright @copyright{} 1996-2017 Free Software Foundation, Inc.
+Copyright @copyright{} 1996-2015 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -602,7 +602,7 @@ Without libtool, the programmer would invoke the @command{ar} command to
 create a static library:
 
 @example
-burger$ @kbd{ar cr libhello.a hello.o foo.o}
+burger$ @kbd{ar cru libhello.a hello.o foo.o}
 burger$
 @end example
 
@@ -632,7 +632,7 @@ libtool are the same ones you would use to produce an executable named
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.o hello.o}
 *** Warning: Linking the shared library libhello.la against the
 *** non-libtool objects foo.o hello.o is not portable!
-ar cr .libs/libhello.a
+ar cru .libs/libhello.a
 ranlib .libs/libhello.a
 creating libhello.la
 (cd .libs && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -662,7 +662,7 @@ archive, not a shared library (@pxref{Static libraries}).}:
 @example
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
-ar cr @value{objdir}/libhello.a foo.o hello.o
+ar cru @value{objdir}/libhello.a foo.o hello.o
 ranlib @value{objdir}/libhello.a
 creating libhello.la
 (cd @value{objdir} && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -676,7 +676,7 @@ burger$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 rm -fr  @value{objdir}/libhello.a @value{objdir}/libhello.la
 ld -Bshareable -o @value{objdir}/libhello.so.0.0 @value{objdir}/foo.o @value{objdir}/hello.o -lm
-ar cr @value{objdir}/libhello.a foo.o hello.o
+ar cru @value{objdir}/libhello.a foo.o hello.o
 ranlib @value{objdir}/libhello.a
 creating libhello.la
 (cd @value{objdir} && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -1086,7 +1086,7 @@ install the executables after the libraries have been installed
 So, for our Ultrix example, we would run:
 
 @example
-a23# libtool --mode=install install -c hell /usr/local/bin/hell
+a23# libtool --mode=install -c hell /usr/local/bin/hell
 install -c hell /usr/local/bin/hell
 a23#
 @end example
@@ -1095,7 +1095,7 @@ On shared library systems that require wrapper scripts, libtool just
 ignores the wrapper script and installs the correct binary:
 
 @example
-burger# libtool --mode=install install -c hell /usr/local/bin/hell
+burger# libtool --mode=install -c hell /usr/local/bin/hell
 install -c @value{objdir}/hell /usr/local/bin/hell
 burger#
 @end example
@@ -2180,7 +2180,7 @@ support dlopening.
 This option should be used if the package has been ported to build clean
 dlls on win32 platforms.  Usually this means that any library data items
 are exported with @code{__declspec(dllexport)} and imported with
-@code{__declspec(dllimport)}.  If this option is not used, libtool will
+@code{__declspec(dllimport)}.  If this macro is not used, libtool will
 assume that the package libraries are not dll clean and will build only
 static libraries on win32 hosts.
 
@@ -6001,7 +6001,7 @@ in cases where it is necessary.
 @subsection Archivers
 
 On all known systems, building a static library can be accomplished by
-running @kbd{ar cr lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
+running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
 where the @file{.a} file is the output library, and each @file{.o} file is an
 object file.
 

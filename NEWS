@@ -1,27 +1,5 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-* Noteworthy changes in release ?.? (????-??-??) [?]
-
-** New features:
-
-  - Libtool script now supports (configure-time and runtime) ARFLAGS
-    variable, which obsoletes AR_FLAGS.  This is due to naming conventions
-    among other *FLAGS and to be consistent with Automake's ARFLAGS.
-
-  - Gnulib testsuite is enabled and run during 'make check'.
-
-** Important incompatible changes:
-
-  - Libtool changed ARFLAGS/AR_FLAGS default from 'cru' to 'cr'.
-
-** Bug fixes:
-
-  - Fix significant slowdown of libtoolize for certain projects (regression
-    introduced in 2.4.3 release) caused by infinite m4 macro recursion.
-
-  - Mitigate the slowdown of libtool script (introduced in v2.4.3) caused by
-    increased number of calls to '$SED $sed_quote_subst' (bug#20006).
-
 * Noteworthy changes in release 2.4.6 (2015-02-15) [stable]
 
 ** New features:
@@ -1212,10 +1190,9 @@ New in 0.1:
 * First release of libtool
 * Support for: *-*-freebsd*, *-*-netbsd*, *-*-sunos4*, *-*-ultrix4*
 -- 
+  Copyright (C) 1996, 1998-2015 Free Software Foundation, Inc.
 
-Copyright (C) 1996, 1998-2017 Free Software Foundation, Inc.
-
-This file is part of GNU Libtool.
+  This file is part of GNU Libtool.
 
 Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright
